@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.usoft.dao.EmployeeMapper">
+  <resultMap id="BaseResultMap" type="com.usoft.entity.Employee">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="last_name" jdbcType="VARCHAR" property="lastName" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="age" jdbcType="INTEGER" property="age" />
+    <result column="sex" jdbcType="INTEGER" property="sex" />
+    <result column="birth" jdbcType="DATE" property="birth" />
+    <result column="dep_id" jdbcType="INTEGER" property="depId" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from employee
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.usoft.entity.Employee">
+    insert into employee (id, last_name, email, 
+      age, sex, birth, dep_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{lastName,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{age,jdbcType=INTEGER}, #{sex,jdbcType=INTEGER}, #{birth,jdbcType=DATE}, #{depId,jdbcType=INTEGER}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.usoft.entity.Employee">
+    update employee
+    set last_name = #{lastName,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      age = #{age,jdbcType=INTEGER},
+      sex = #{sex,jdbcType=INTEGER},
+      birth = #{birth,jdbcType=DATE},
+      dep_id = #{depId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, last_name, email, age, sex, birth, dep_id
+    from employee
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="empsAll">
+    select id, last_name, email, age, sex, birth, dep_id
+    from employee
+  </select>
+  <resultMap id="empsAll" type="com.usoft.entity.Employee">
+    <id column="id" property="id"></id>
+    <result column="last_name" property="lastName"></result>
+    <result column="email" property="email"></result>
+    <result column="age" property="age"></result>
+    <result column="sex" property="sex"></result>
+    <result column="birth" property="birth"></result>
+    <association property="department" column="dep_id" select="com.usoft.dao.DepartmentMapper.selectByPrimaryKey"></association>
+  </resultMap>
+</mapper>
